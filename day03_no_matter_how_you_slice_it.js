@@ -17,7 +17,6 @@ claims.forEach(rect => {
     for (let x = rect.x; x < rect.x + rect.w; ++x) {
         for (let y = rect.y; y < rect.y + rect.l; ++y) {
             tiles[`${x},${y}`] = (tiles[`${x},${y}`] || 0) + 1;
-            //console.log(`${x},${y}: ${tiles}`);
         }
     }
 });
