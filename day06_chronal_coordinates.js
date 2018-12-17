@@ -1,4 +1,4 @@
-// Advent of Code 2018 - Day 65: Chronal Coordinates
+// Advent of Code 2018 - Day 6: Chronal Coordinates
 // https://adventofcode.com/2018/day/6
 
 const { range, maxBy, max, min, sum } = require('lodash');
