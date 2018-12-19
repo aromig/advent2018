@@ -30,11 +30,6 @@ function runSimulation(generations) {
     let i = 0;
     for (; i < generations; i++) {
         nextGen = newGeneration(nextGen, changes);
-        let plantArea = nextGen.slice(nextGen.indexOf('#'), nextGen.lastIndexOf('#'));
-        if (plantArea === init_state) {
-            console.log('Stability reached!');
-            break;
-        }
     }
 
     let sum = 0;
