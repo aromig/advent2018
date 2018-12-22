@@ -48,7 +48,7 @@ function playLordOfTheCocoa(map, elfAttack = ATTACK, stopIfElfDies = false) {
         for (let i = 0; i < mobs.length; i++) {
             let mob = mobs[i];
             if (mob.alive) {
-                // game over if there's no one left to fight
+                // Game over if there's no one left to fight
                 if (mobs.filter(m => m.alive && m.race !== mob.race).length < 1) {
                     break round;
                 }
@@ -71,6 +71,7 @@ function playLordOfTheCocoa(map, elfAttack = ATTACK, stopIfElfDies = false) {
                     if (enemy.hp < 1) {
                         enemy.alive = false;
                         map[enemy.pos.y][enemy.pos.x] = OPEN;
+                        // An elf died. Restart the game and buff them some more!
                         if (enemy.race === ELF && stopIfElfDies)
                             return null;
                     }
