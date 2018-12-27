@@ -31,9 +31,9 @@ let opCodes = {};
 let testprogram_started = false;
 let registers = [0, 0, 0 ,0];
 
-let reBefore = /Before: \[(\d+), (\d+), (\d+), (\d+)\]/;
-let reAfter  = /After:  \[(\d+), (\d+), (\d+), (\d+)\]/;
-let reInstr  = /(\d+) (\d+) (\d+) (\d+)/;
+const reBefore = /Before: \[(\d+), (\d+), (\d+), (\d+)\]/;
+const reAfter  = /After:  \[(\d+), (\d+), (\d+), (\d+)\]/;
+const reInstr  = /(\d+) (\d+) (\d+) (\d+)/;
 
 input.forEach(line => {
     if ((match = reBefore.exec(line))) {
