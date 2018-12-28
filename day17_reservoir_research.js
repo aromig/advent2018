@@ -88,19 +88,19 @@ function letWaterFlow(data, cursor) {
         letWaterFlow(data, cursorDOWN);
     }
 
-    if (isWaterOrClay(data, cursorDOWN) && isEmpty(data, cursorLEFT)) {
+    if (isFilled(data, cursorDOWN, [WATER, CLAY]) && isEmpty(data, cursorLEFT)) {
         fill(data, cursorLEFT, WATER_FLOWING);
         letWaterFlow(data, cursorLEFT);
     }
 
-    if (isWaterOrClay(data, cursorDOWN) && isEmpty(data, cursorRIGHT)) {
+    if (isFilled(data, cursorDOWN, [WATER, CLAY]) && isEmpty(data, cursorRIGHT)) {
         fill(data, cursorRIGHT, WATER_FLOWING);
         letWaterFlow(data, cursorRIGHT);
     }
 
-    if (isWaterOrClay(data, cursorDOWN) && isWallLeft(data, cursor) && isWallRight(data, cursor)) {
-        fillLeft(data, cursor, WATER);
-        fillRight(data, cursor, WATER);
+    if (isFilled(data, cursorDOWN, [WATER, CLAY]) && isWallToLeft(data, cursor) && isWallToRight(data, cursor)) {
+        fillToLeft(data, cursor, WATER);
+        fillToRight(data, cursor, WATER);
         fill(data, cursor, WATER);
     }
 }
@@ -111,32 +111,29 @@ function getContents(data, cursor) {
 function isEmpty(data, cursor) {
     return !getContents(data, cursor);
 }
-function isWaterOrClay(data, cursor) {
-    return (getContents(data, cursor) === WATER) || (getContents(data, cursor) === CLAY);
-}
-function isClay(data, cursor) {
-    return getContents(data, cursor) === CLAY;
+function isFilled(data, cursor, contents) {
+    return contents.indexOf(getContents(data, cursor)) > -1;
 }
 
 function fill(data, cursor, contents) {
     data.filled[XY(cursor)] = contents;
 }
-function fillLeft(data, cursor, contents) {
+function fillToLeft(data, cursor, contents) {
     let offset = -1;
     while (true) {
         let cursorOffset = { ...cursor, x: cursor.x + offset };
-        if (isClay(data, cursorOffset))
+        if (isFilled(data, cursorOffset, [CLAY]))
             return;
         
         fill(data, cursorOffset, contents);
         offset--;
     }
 }
-function fillRight(data, cursor, contents) {
+function fillToRight(data, cursor, contents) {
     let offset = 1;
     while (true) {
         let cursorOffset = { ...cursor, x: cursor.x + offset };
-        if (isClay(data, cursorOffset))
+        if (isFilled(data, cursorOffset, [CLAY]))
             return;
 
         fill(data, cursorOffset, contents);
@@ -144,45 +141,47 @@ function fillRight(data, cursor, contents) {
     }
 }
 
-function isWallLeft(data, cursor) {
+function isWallToLeft(data, cursor) {
     let offset = -1;
     while (true) {
         let cursorOffset = { ...cursor, x: cursor.x + offset };
         if (isEmpty(data, cursorOffset))
             return false;
-        if (isClay(data, cursorOffset))
+        if (isFilled(data, cursorOffset, [CLAY]))
             return true;
         offset--;
     }
 }
-function isWallRight(data, cursor) {
+function isWallToRight(data, cursor) {
     let offset = 1;
     while (true) {
         let cursorOffset = { ...cursor, x: cursor.x + offset };
         if (isEmpty(data, cursorOffset))
             return false;
-        if (isClay(data, cursorOffset))
+        if (isFilled(data, cursorOffset, [CLAY]))
             return true;
         offset++;
     }
 }
 
 function printMap(data) {
-    let bounds = Object.keys(data.filled).map(xy => xy.split(',').map(x => +x))
+    let bounds = Object.keys(data.filled)
+                    .map(xy => xy.split(',')
+                    .map(x => +x))
                     .reduce((acc, [x, y]) => {
-                        acc.minX = Math.min(acc.minX, x);
-                        acc.maxX = Math.max(acc.maxX, x);
-                        acc.minY = Math.min(acc.minY, y);
-                        acc.maxY = Math.max(acc.maxY, y);
-                        return acc;
-                    },
-                    {
-                        minX: Infinity,
-                        maxX: -Infinity,
-                        minY: Infinity,
-                        maxY: -Infinity
-                    }
-                );
+                            acc.minX = Math.min(acc.minX, x);
+                            acc.maxX = Math.max(acc.maxX, x);
+                            acc.minY = Math.min(acc.minY, y);
+                            acc.maxY = Math.max(acc.maxY, y);
+                            return acc;
+                        },
+                        {
+                            minX: Infinity,
+                            maxX: -Infinity,
+                            minY: Infinity,
+                            maxY: -Infinity
+                        }
+                    );
     let MAP = '';
     for (let i_y = bounds.minY; i_y <= bounds.maxY; i_y++) {
         for (let i_x = bounds.minX; i_x <= bounds.maxX; i_x++) {
