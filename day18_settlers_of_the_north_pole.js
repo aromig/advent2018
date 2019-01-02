@@ -25,7 +25,7 @@ const TREE = '|';
 const LUMBER = '#';
 const lumberyard = input.map(line => line.split(''));
 
-//console.log(`Part 1: ${runSimulation(lumberyard, 10)}`);
+console.log(`Part 1: ${runSimulation(lumberyard, 10)}`);
 console.log(`Part 2: ${runSimulation(lumberyard, 1000000000, true)}`);
 
 // Functions
