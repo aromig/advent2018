@@ -23,7 +23,7 @@ const OPCODES = {
     eqrr: (reg, A, B, C) => (reg[C] = reg[A] === reg[B] ? 1 : 0)
 };
 
-let TARGET_PTR = 28;
+let TARGET_PTR = 28; // instruction 28 is the only one that even involves register 0
 let IP_REGISTER;
 const program = [];
 let reIP = /#ip (\d+)/;
